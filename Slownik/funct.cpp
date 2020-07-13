@@ -9,10 +9,11 @@ void RemoveElement(Slownik& sl)
 	{
 		cin.getline(l, 255);
 	} while (l[0] == '\0');
-	char* t = sl.GetForEng(l);
+	char* t = sl.GetForEng_(l);
 	if (t != nullptr)
 	{
-		t == nullptr;
+		
+
 		cout << "Введiть новий переклад - ";
 		do
 		{
@@ -21,12 +22,13 @@ void RemoveElement(Slownik& sl)
 
 		try 
 		{
-		if(!remove("baza.txt")) throw 1;
+				remove("baza.txt");
 		}
-		catch (int ex) 
+		catch (...) 
 		{
-			if (ex == 1) cerr << "Не можна видалити файл!" << endl;
+			cerr << "Не можна видалити файл!"<< endl;
 		}
+		
 
 		ofstream fs("baza.txt", ios_base::app);
 		sl.ReturnFromSlownik(fs);
@@ -52,14 +54,16 @@ void DeleteElement(Slownik& sl)
 	} while (l[0] == '\0');
 
 	sl.DelElement(l);
-	try 
+	
+	try
 	{
-	if(!remove("baza.txt")) throw 1;
+		remove("baza.txt");
 	}
-	catch (int ex) 
+	catch (...)
 	{
-		if (ex == 1) cerr << "Не можна видалити файл!" << endl;
+		cerr << "Не можна видалити файл!" << endl;
 	}
+	
 
 	ofstream fs("baza.txt", ios_base::app);
 	sl.ReturnFromSlownik(fs);

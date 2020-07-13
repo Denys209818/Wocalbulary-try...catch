@@ -1,6 +1,6 @@
 #include "libs.h"
 #include "Slownik.h"
-//try...catch()
+
 void Slownik::AddToSlownik(Node* temp, Node* snew, char* engl, char* ukr)
 {
 	if (this->slowo == nullptr)
@@ -8,15 +8,9 @@ void Slownik::AddToSlownik(Node* temp, Node* snew, char* engl, char* ukr)
 		this->slowo = snew;
 		snew->left = nullptr;
 		snew->right = nullptr;
-		try 
-		{
-		if(!strcpy_s(snew->eng, strlen(engl) + 1, engl)) throw exception();
-		if(!strcpy_s(snew->ukr, strlen(ukr) + 1, ukr)) throw exception();
-		}
-		catch (exception & ex)
-		{
-			cout << ex.what() << endl;
-		}
+			strcpy_s(snew->eng, strlen(engl) + 1, engl);
+			strcpy_s(snew->ukr, strlen(ukr) + 1, ukr);
+		
 		return;
 	}
 
@@ -25,15 +19,9 @@ void Slownik::AddToSlownik(Node* temp, Node* snew, char* engl, char* ukr)
 		if (temp->right == nullptr)
 		{
 			temp->right = snew;
-			try 
-			{
-			if(!strcpy_s(temp->right->eng, strlen(engl) + 1, engl)) throw exception();
-			if(!strcpy_s(temp->right->ukr, strlen(ukr) + 1, ukr)) throw exception();
-			}
-			catch (exception & ex)
-			{
-				cerr << ex.what() << endl;
-			}
+			strcpy_s(temp->right->eng, strlen(engl) + 1, engl);
+			strcpy_s(temp->right->ukr, strlen(ukr) + 1, ukr);
+			
 			return;
 		}
 		AddToSlownik(temp->right, snew, engl, ukr);
@@ -43,15 +31,9 @@ void Slownik::AddToSlownik(Node* temp, Node* snew, char* engl, char* ukr)
 		if (temp->left == nullptr)
 		{
 			temp->left = snew;
-			try 
-			{
-			if(!strcpy_s(temp->left->eng, strlen(engl) + 1, engl)) throw exception();
-			if(!strcpy_s(temp->left->ukr, strlen(ukr) + 1, ukr)) throw exception();
-			}
-			catch (exception& ex)
-			{
-				cerr << ex.what() << endl;
-			}
+			strcpy_s(temp->left->eng, strlen(engl) + 1, engl);
+			strcpy_s(temp->left->ukr, strlen(ukr) + 1, ukr);
+			
 			return;
 		}
 		AddToSlownik(temp->left, snew, engl, ukr);
@@ -62,15 +44,9 @@ void Slownik::AddToSlownik(Node* temp, Node* snew, char* engl, char* ukr)
 		if (temp->right == nullptr)
 		{
 			temp->right = snew;
-			try 
-			{
-			if(!strcpy_s(temp->right->eng, strlen(engl) + 1, engl)) throw exception();
-			if(!strcpy_s(temp->right->ukr, strlen(ukr) + 1, ukr)) throw exception();
-			}
-			catch (exception& ex)
-			{
-				cerr << ex.what() << endl;
-			}
+			strcpy_s(temp->right->eng, strlen(engl) + 1, engl);
+			strcpy_s(temp->right->ukr, strlen(ukr) + 1, ukr);
+			
 		}
 		AddToSlownik(temp->right, snew, engl, ukr);
 	}
@@ -92,7 +68,14 @@ void Slownik::ShowFromSlownik(Node* temp)
 //try...catch()
 void Slownik::Del(Node*& temp, char* el)
 {
-	if (temp == nullptr) return;
+	try 
+	{
+	if (temp == nullptr) throw 1;
+	}
+	catch (int ex) 
+	{
+		if (ex == 1) return;
+	}
 
 	if ((int)el[strlen(el) - 1] < (int)temp->eng[strlen(temp->eng) - 1]) { Del(temp->left, el); }
 	else if ((int)el[strlen(el) - 1] >= (int)temp->eng[strlen(temp->eng) - 1] && _strcmpi(temp->eng, el) != 0) { Del(temp->right, el); }
@@ -121,15 +104,9 @@ void Slownik::Del(Node*& temp, char* el)
 		else
 		{
 			Node* min = FindMin(temp->right);
-			try 
-			{
-			if(!strcpy_s(temp->eng, strlen(min->eng) + 1, min->eng)) throw "Can not copy!";
-			if(!strcpy_s(temp->ukr, strlen(min->ukr) + 1, min->ukr)) throw "Can not copy!";
-			}
-			catch (const char * h) 
-			{
-				cerr << h << endl;
-			}
+			strcpy_s(temp->eng, strlen(min->eng) + 1, min->eng);
+			 strcpy_s(temp->ukr, strlen(min->ukr) + 1, min->ukr);
+			
 			Del(temp->right, min->eng);
 			return;
 		}
@@ -148,10 +125,17 @@ Slownik::Node*& Slownik::FindMin(Node*& root)
 		return root;
 	FindMin(root->left);
 }
-
+//try...catch()
 void Slownik::ReturnSlownik(Node* temp, ofstream& fs)
 {
-	if (temp == nullptr) return;
+	try
+	{
+		if (temp == nullptr) throw 1;
+	}
+	catch (int ex)
+	{
+		if (ex == 1) return;
+	}
 
 	if (strpbrk(temp->ukr, "?"))
 	{
@@ -206,6 +190,41 @@ char* Slownik::GetForEng(char* word)
 			char* el2 = new char[255];
 			strcpy_s(el2, strlen(el)+1,el);
 			return el2;
+		}
+
+		else if ((int)word[strlen(word) - 1] >= (int)temp->eng[strlen(temp->eng) - 1])
+		{
+			temp = temp->right;
+		}
+
+		else if ((int)word[strlen(word) - 1] < (int)temp->eng[strlen(temp->eng) - 1])
+		{
+			temp = temp->left;
+		}
+
+	}
+
+	cout << "Не знайдено!" << endl;
+	return nullptr;
+}
+
+char* Slownik::GetForEng_(char* word)
+{
+	Node* temp = this->slowo;
+	while (temp != nullptr && temp->eng != word)
+	{
+		if (_stricmp(temp->eng, word) == 0)
+		{
+			for (int i = 0; i < strlen(temp->ukr) + 1; i++)
+			{
+				if (temp->ukr[i] == '?')
+				{
+					temp->ukr[i] = 'i';
+				}
+			}
+
+			
+			return temp->ukr;
 		}
 
 		else if ((int)word[strlen(word) - 1] >= (int)temp->eng[strlen(temp->eng) - 1])

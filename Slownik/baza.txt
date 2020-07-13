@@ -1,14 +1,14 @@
 
 America.Америка
-Australia.Австрал?я
-Austria.Австр?я
-led.св?тлод?од
+Australia.Австралiя
+Austria.Австрiя
+led.свiтлодiод
 child.дитина
 bee.бджола
 tree.дерево
 tee.чай
-proof.доказ, п?дтвердження
+proof.доказ, пiдтвердження
 kangaroo.кенгуру
-wasp.оса
-cucumber.ог?рок
+cucumber.огiрок
 honey.мед
+wasp.оса

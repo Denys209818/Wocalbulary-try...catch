@@ -32,6 +32,8 @@ public:
 
 	char* GetForEng(char* word);
 
+	char* GetForEng_(char* word);
+
 	void Show();
 
 	void DelElement(char* el);
